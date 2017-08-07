@@ -24,8 +24,8 @@ class Today extends Component {
             })
     }
     componentWillMount () {
-        this.pusher = new Pusher('18b94d3420ae0dc82f6c', {
-            cluster: 'eu',
+        this.pusher = new Pusher('APP_KEY', {
+            cluster: 'YOUR_CLUSTER',
             encrypted: true
         });
         this.prices = this.pusher.subscribe('coin-prices');
