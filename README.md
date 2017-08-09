@@ -1,4 +1,4 @@
-# ReactChat
+# PusherCoins
 
 This app demonstrates how to use ReactJS, Pusher, and Service Worker to build a realtime PWA.
 
