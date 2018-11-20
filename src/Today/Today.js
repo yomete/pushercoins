@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './Today.css'
 import axios from 'axios'
 import Pusher from 'pusher-js'
-import {CryptoPrice} from "./CryptoPrice";
+import { CryptoPrice } from "./CryptoPrice";
 
 class Today extends Component {
 	/**
@@ -30,7 +30,7 @@ class Today extends Component {
 	 *
 	 * Source: https://facebook.github.io/react/docs/react-component.html
 	 */
-	componentWillMount() {}
+	componentWillMount() { }
 
 	/**
 	 * Let's create utilitary functions to keep our code D.R.Y.
@@ -55,7 +55,7 @@ class Today extends Component {
 		});
 		this.prices = this.pusher.subscribe('coin-prices');
 		axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,LTC&tsyms=USD')
-			.then(({data: {BTC, ETH, LTC}}) => { // Since we're never using responseh or data directly might aswell deconstruct it here
+			.then(({ data: { BTC, ETH, LTC } }) => { // Since we're never using responseh or data directly might aswell deconstruct it here
 				/**
 				 * Avoid calling setStates multiple times, just do every calls in one go and let react
 				 * handle the batching
@@ -71,16 +71,16 @@ class Today extends Component {
 		// Let's store this interval in our class so that we can remove it in componentWillUnmount
 		this.cryptoSubscription = setInterval(() => {
 			axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,LTC&tsyms=USD')
-				.then(({data}) => { // This is a style question, I prefed doing it this way, to each its own
+				.then(({ data }) => { // This is a style question, I prefed doing it this way, to each its own
 					this.sendPricePusher(data)
 				})
 				.catch(console.error)
 		}, 10000);
-		this.prices.bind('prices', ({prices: {BTC, ETH, LTC}}) => {
+		this.prices.bind('prices', ({ prices: { BTC, ETH, LTC } }) => {
 			this.setState({
-				btcprice: BTC.usd,
-				ethprice: ETH.usd,
-				ltcprice: LTC.usd
+				btcprice: BTC.USD,
+				ethprice: ETH.USD,
+				ltcprice: LTC.USD
 			}, this.saveStateToLocalStorage);
 		}, this);
 	}
@@ -91,15 +91,15 @@ class Today extends Component {
 
 	render() {
 		// Let's extract everything uptop to keep our render method cleaner ;)
-		const {ethprice, btcprice, ltcprice} = this.state;
+		const { ethprice, btcprice, ltcprice } = this.state;
 		return (
 			<div className="today--section container">
 				<h2>Current Price</h2>
 				<div className="columns today--section__box">
 					{/** Creating components for things that repeat themselves is also pretty good**/}
-					<CryptoPrice currency="btc" price={btcprice}/>
-					<CryptoPrice currency="eth" price={ethprice}/>
-					<CryptoPrice currency="ltc" price={ltcprice}/>
+					<CryptoPrice currency="btc" price={btcprice} />
+					<CryptoPrice currency="eth" price={ethprice} />
+					<CryptoPrice currency="ltc" price={ltcprice} />
 				</div>
 			</div>
 		)
